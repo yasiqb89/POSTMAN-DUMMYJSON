@@ -1,0 +1,225 @@
+{
+	"info": {
+		"_postman_id": "e7c50a87-6104-429a-b8dd-aeea35a31b3f",
+		"name": "Ecommerce API Tests - DummyJSON",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43546498",
+		"_collection_link": "https://yasiqb89.postman.co/workspace/yasiqb89's-Workspace~eed0adf1-df59-4a70-88a7-046483363bbc/collection/43546498-e7c50a87-6104-429a-b8dd-aeea35a31b3f?action=share&source=collection_link&creator=43546498"
+	},
+	"item": [
+		{
+			"name": "Get Product List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dummyjson.com/products",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Login (Get Token)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extract accessToken from response and save to environment variable",
+							"const response = pm.response.json();",
+							"pm.environment.set(\"accessToken\", response.accessToken);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"emilys\",\n  \"password\": \"emilyspass\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dummyjson.com/auth/login",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Logged-in User Info",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get Cart (User ID 1)",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get Cart (User ID 5)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "GET https://dummyjson.com/carts/user/5",
+					"protocol": "GET https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"carts",
+						"user",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Products by Name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"At least one product is returned\", () => {",
+							"  pm.expect(jsonData.products.length).to.be.above(0);",
+							"});",
+							"",
+							"// Optional: check if every product title contains the word \"laptop\"",
+							"pm.test(\"All product titles include 'laptop'\", () => {",
+							"  jsonData.products.forEach(product => {",
+							"    pm.expect(product.title.toLowerCase()).to.include(\"laptop\");",
+							"  });",
+							"});",
+							"",
+							"pm.test(\"At least one product contains 'laptop' in title\", () => {",
+							"  const match = jsonData.products.some(p => p.title.toLowerCase().includes(\"laptop\"));",
+							"  pm.expect(match).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dummyjson.com/products/search?q=laptop",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"products",
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "laptop"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Logout success message is present\", () => {",
+							"  const jsonData = pm.response.json();",
+							"  pm.expect(jsonData.message).to.eql(\"Logged out successfully\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://dummyjson.com/auth/logout",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
