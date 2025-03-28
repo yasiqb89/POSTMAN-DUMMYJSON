@@ -1,0 +1,36 @@
+name: Run Postman API Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  postman-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🟨 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📦 Install Newman and HTML Reporter
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-html
+
+      - name: 🚀 Run Newman Tests
+        run: |
+          newman run collections/dummyjson-collection.json -e dummyjson-env.json -r cli,html
+
+      - name: 📤 Upload HTML Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman-html-report
+          path: newman/*.html

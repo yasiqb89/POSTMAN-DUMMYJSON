@@ -79,7 +79,19 @@
 			"name": "Get Logged-in User Info",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "https://dummyjson.com/auth/me",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"auth",
+						"me"
+					]
+				}
 			},
 			"response": []
 		},
@@ -87,7 +99,26 @@
 			"name": "Get Cart (User ID 1)",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://dummyjson.com/carts/user/1",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"carts",
+						"user",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -103,8 +134,8 @@
 					}
 				],
 				"url": {
-					"raw": "GET https://dummyjson.com/carts/user/5",
-					"protocol": "GET https",
+					"raw": "https://dummyjson.com/carts/user/5",
+					"protocol": "https",
 					"host": [
 						"dummyjson",
 						"com"
