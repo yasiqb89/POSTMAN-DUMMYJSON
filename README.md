@@ -7,15 +7,18 @@ All tests are written and organized using **Postman**, and executed via **Newman
 ---
 
 ## 📁 Project Structure
+
+```
 POSTMAN-DUMMYJSON/
 ├── collections/
-│   └── dummyjson-collection.json      # Main collection with grouped test suites (folders)
-├── dummyjson-env.json                 # Postman environment file (accessToken, base URL, etc.)
-├── reports/                           # (Optional) Newman HTML reports - NOT ADDED
-├── .github/workflows/                 # GitHub Actions CI config 
-└── README.md                          # This file
-
----
+│   └── dummyjson-collection.json      # Main Postman collection (with folders/suites)
+├── dummyjson-env.json                 # Postman environment file
+├── reports/                           # Newman HTML reports (optional)
+├── .github/
+│   └── workflows/
+│       └── api-tests.yml              # GitHub Actions workflow (if configured)
+└── README.md                          # Project documentation
+```
 
 ## ✅ Features Covered
 
